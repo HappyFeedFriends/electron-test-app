@@ -13,14 +13,12 @@ const isDev = config.isDev;
 const mode = isDev ? 'development' : 'production';
 
 module.exports = {
+  target: 'web',
   entry: './src/client/index.tsx',
   mode,
   devServer: {
     static: {
       directory: `./build/`,
-    },
-    historyApiFallback: {
-      rewrites: [{ from: /./, to: './client/index.html' }],
     },
     compress: true,
     port: 1337,
@@ -50,7 +48,7 @@ module.exports = {
             loader: 'css-loader',
             options: {
               modules: {
-                localIdentName: `web_developer__[name]__[local]`,
+                localIdentName: `[name]__[local]_[fullhash]`,
               },
               importLoaders: 2,
             },
@@ -63,7 +61,7 @@ module.exports = {
         test: /\.(png|jpg|jpeg|gif|webp)$/,
         type: 'asset',
         generator: {
-          filename: `images/[name].[hash].[ext]`,
+          filename: `images/[name].[fullhash].[ext]`,
         },
       },
       {
@@ -73,7 +71,7 @@ module.exports = {
     ],
   },
   output: {
-    filename: '[id]/bundle.[name].[hash].js',
+    filename: '[id]/bundle.[name].[fullhash].js',
     path: path.resolve(__dirname, 'build'),
   },
 
@@ -81,7 +79,7 @@ module.exports = {
     new MiniCSSExtractPlugin(),
     new HtmlWebpackPlugin({
       template: 'src/template.ejs',
-      title: `Web Developer Life`,
+      title: `Electron test app`,
       containerId: 'root',
       favicon: './src/client/images/favicon.png',
     }),
